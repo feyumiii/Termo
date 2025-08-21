@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <link rel="stylesheet" href="termo.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Termo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1>TERMO</h1>
+    <section id="palavras" class="inputs">
+      <section id="L0" class="linhaInput">
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+      </section>
+      <section id="L1" class="linhaInput">
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+      </section>
+      <section id="L2" class="linhaInput">
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+      </section>
+      <section id="L3" class="linhaInput">
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+      </section>
+      <section id="L4" class="linhaInput">
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+      </section>
+      <section id="L5" class="linhaInput">
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+      </section>
+      <section id="L6" class="linhaInput">
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+        <input maxlength="1" type="text" class="letra" />
+      </section>
+    </section>
+
+    <div id="teclado-do-jogo">
+      <div class="linhaTeclado">
+        <button class="teclado">Q</button>
+        <button class="teclado">W</button>
+        <button class="teclado">E</button>
+        <button class="teclado">R</button>
+        <button class="teclado">T</button>
+        <button class="teclado">Y</button>
+        <button class="teclado">U</button>
+        <button class="teclado">I</button>
+        <button class="teclado">O</button>
+        <button class="teclado">P</button>
+      </div>
+      <div class="linhaTeclado">
+        <button class="teclado">A</button>
+        <button class="teclado">S</button>
+        <button class="teclado">D</button>
+        <button class="teclado">F</button>
+        <button class="teclado">G</button>
+        <button class="teclado">H</button>
+        <button class="teclado">J</button>
+        <button class="teclado">K</button>
+        <button class="teclado">L</button>
+        <button class="backspace">DELETE</button>
+      </div>
+      <div class="linhaTeclado">
+        <button class="teclado">Z</button>
+        <button class="teclado">X</button>
+        <button class="teclado">C</button>
+        <button class="teclado">V</button>
+        <button class="teclado">B</button>
+        <button class="teclado">N</button>
+        <button class="teclado">M</button>
+        <button class="enter">ENTER</button>
+      </div>
+    </div>
+
+    <div class="modalPosicionamento" id="modalVitoria">
+      <div class="modal">
+        <h2>Parabéns!</h2>
+        <h3>Palavra: PETSI</h3>
+        <button class="botaoReiniciar">Reiniciar</button>
+      </div>
+    </div>
+
+    <div class="modalPosicionamento" id="modalDerrota">
+      <div class="modal">
+        <h2>Tente</h2>
+        <h2>Novamente</h2>
+        <button class="botaoReiniciar">Reiniciar</button>
+      </div>
+    </div>
+
+    <script>
+      const estadoDoJogo = [
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+      ];
+
+      const palavraSecreta = ["P", "E", "T", "S", "I"];
+
+      const modalVitoria = document.getElementById("modalVitoria");
+      const modalDerrota = document.getElementById("modalDerrota");
+      const botoesReiniciar = document.querySelectorAll(".botaoReiniciar");
+
+      let tentativaAtual = 0;
+      let letraAtual = 0;
+
+      function bloquearInputsUsados() {
+        const todasAsLetras = document.querySelectorAll(".letra");
+        todasAsLetras.forEach((input) => {
+          if (
+            input.classList.contains("correta") ||
+            input.classList.contains("espera") ||
+            input.classList.contains("presente") ||
+            input.classList.contains("ausente")
+          ) {
+            input.disabled = true;
+          } else {
+            input.disabled = false;
+          }
+        });
+      }
+
+      function verificarTentativaAtual() {
+        const inputs = document.querySelectorAll(`#L${tentativaAtual} .letra`);
+        let status = [];
+        let status_do_jogo = true;
+
+        inputs.forEach((input, index) => {
+          const letraDigitada = input.value.toUpperCase();
+          const letraSecreta = palavraSecreta[index];
+
+          if (letraDigitada === letraSecreta) {
+            input.classList.add("correta");
+            status.push("correta");
+          } else if (palavraSecreta.includes(letraDigitada)) {
+            input.classList.add("presente");
+            status.push("presente");
+            status_do_jogo = false;
+          } else {
+            input.classList.add("ausente");
+            status.push("ausente");
+            status_do_jogo = false;
+          }
+        });
+
+        if (!status_do_jogo) {
+          estadoDoJogo[tentativaAtual] = status;
+        } else {
+          return status_do_jogo;
+        }
+      }
+
+      function reinicializarLinha(tentativaAtual) {
+        const inputs = document.querySelectorAll(`#L${tentativaAtual} .letra`);
+
+        inputs.forEach((input, index) => {
+          input.classList.remove("espera");
+        });
+      }
+
+      function reiniciarJogo() {
+        tentativaAtual = 0;
+        letraAtual = 0;
+
+        const todosInputs = document.querySelectorAll(".letra");
+        todosInputs.forEach((input) => {
+          input.value = "";
+          input.classList.remove("correta", "presente", "ausente", "espera");
+          input.disabled = false;
+        });
+
+        modalVitoria.classList.remove("visivel");
+        modalDerrota.classList.remove("visivel");
+
+        document.querySelector("#L0 .letra").focus();
+      }
+
+      botoesReiniciar.forEach((botao) => {
+        botao.addEventListener("click", reiniciarJogo);
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const inputs = document.querySelectorAll(
+            `#L${tentativaAtual} .letra`
+          );
+
+          if (
+            inputs[0].value !== "" &&
+            inputs[1].value !== "" &&
+            inputs[2].value !== "" &&
+            inputs[3].value !== "" &&
+            inputs[4].value !== ""
+          ) {
+            let status_do_jogo = verificarTentativaAtual();
+
+            if (status_do_jogo) {
+              document
+                .querySelectorAll(".letra")
+                .forEach((elemento) => (elemento.disabled = true));
+              modalVitoria.classList.add("visivel");
+              return;
+            }
+
+            if (tentativaAtual >= 6) {
+              modalDerrota.classList.add("visivel");
+              return;
+            }
+
+            if (tentativaAtual < 6) {
+              tentativaAtual++;
+              letraAtual = 0;
+              reinicializarLinha(tentativaAtual);
+              bloquearInputsUsados();
+              document.querySelector(`#L${tentativaAtual} .letra`).focus();
+            }
+          }
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        bloquearInputsUsados();
+
+        document.querySelectorAll(".teclado").forEach((botao) => {
+          botao.addEventListener("click", () => {
+            const letra = botao.textContent.trim().toUpperCase();
+            const inputs = document.querySelectorAll(
+              `#L${tentativaAtual} .letra`
+            );
+
+            for (let i = 0; i < inputs.length; i++) {
+              if (inputs[i].value === "" && !inputs[i].disabled) {
+                inputs[i].value = letra;
+                break;
+              }
+            }
+          });
+        });
+
+        const enter = document.querySelector("#teclado-do-jogo .enter");
+        if (enter)
+          enter.addEventListener("click", () => {
+            const eventoEnter = new KeyboardEvent("keydown", {
+              key: "Enter",
+              code: "Enter",
+              keyCode: 13,
+              which: 13,
+              bubbles: true,
+              cancelable: true,
+            });
+            document.dispatchEvent(eventoEnter);
+          });
+
+        const deletar = document.querySelector("#teclado-do-jogo .backspace");
+        if (deletar)
+          deletar.addEventListener("click", () => {
+            const inputs = document.querySelectorAll(
+              `#L${tentativaAtual} .letra`
+            );
+            for (let i = inputs.length - 1; i >= 0; i--) {
+              if (inputs[i].disabled) continue;
+
+              if (inputs[i].value !== "") {
+                inputs[i].value = "";
+                break;
+              }
+            }
+          });
+      });
+    </script>
+  </body>
+</html>
